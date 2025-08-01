@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  email       String        @unique
+  password    String
+  name        String?
+  role        Role          @default(USER)
+  reservations String[]     @db.ObjectId // list of Reservation IDs (manual relasi)
+}
+
+model Movie {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  posterUrl   String
+  genre       String
+  showtimeIds String[]      @db.ObjectId // list of Showtime IDs (manual relasi)
+}
+
+model Showtime {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  movieId     String        @db.ObjectId  // reference to Movie
+  startTime   DateTime
+  seatIds     String[]      @db.ObjectId // reference to Seat
+  reservationIds String[]   @db.ObjectId // reference to Reservation
+}
+
+model Seat {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  showtimeId     String     @db.ObjectId  // reference to Showtime
+  seatNumber     String
+  isReserved     Boolean    @default(false)
+  reservedByUser String?    @db.ObjectId // reference to User
+  reservationId  String?    @db.ObjectId // reference to Reservation
+}
+
+model Reservation {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String     @db.ObjectId     // reference to User
+  showtimeId  String     @db.ObjectId     // reference to Showtime
+  seatIds     String[]   @db.ObjectId     // list of Seat IDs
+  status      String     @default("ACTIVE")
+  createdAt   DateTime   @default(now())
+}
