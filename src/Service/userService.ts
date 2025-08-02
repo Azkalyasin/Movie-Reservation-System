@@ -1,9 +1,9 @@
 import prisma from "../lib/prisma";
 import { registerInput } from "../types/auth";
-import { loginInput } from "../types/auth";
+import { findUnique } from "../types/auth";
 import { User } from "../generated/prisma";
 
-const createUser = async(data: registerInput): Promise<User> => {
+export const createUser = async(data: registerInput): Promise<User> => {
     return prisma.user.create({
         data: {
             email: data.email,
@@ -14,7 +14,15 @@ const createUser = async(data: registerInput): Promise<User> => {
 };
 
 
+export const findUser = async (data: findUnique): Promise<User | null> =>{
+    return prisma.user.findUnique({
+        where: {
+            email: data.email,
+        }
+    })
+}
 
-export default createUser
+
+
 
 

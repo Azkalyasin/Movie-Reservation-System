@@ -20,7 +20,6 @@ app.use(limit);
 
 app.use('/api/v1', routerv1);
 
-
 app.listen(config.PORT, () => {
   logger.info(`SERVER RUNNING IN: http://localhost:${config.PORT}`);
 });

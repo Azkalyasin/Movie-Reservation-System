@@ -1,9 +1,14 @@
-import dotenv from "dotenv"
+import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
-const config = {
-    PORT: process.env.PORT || 3000
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined in .env file');
 }
 
-export default config
+const config = {
+  PORT: process.env.PORT || 3000,
+  JWTSECRET: process.env.JWT_SECRET,
+};
+
+export default config;

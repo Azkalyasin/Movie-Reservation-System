@@ -4,7 +4,6 @@ export interface registerInput {
   name?: string;
 }
 
-export interface loginInput {
+export interface findUnique {
   email: string;
-  password: string;
 }

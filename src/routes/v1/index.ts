@@ -1,11 +1,8 @@
-import { Request, Router, Response } from "express";
-
+import { Router } from 'express';
+import routerAuth from './auth';
 
 const router = Router();
 
-router.get("/", (req: Request, res:Response) => {
-    res.send("sdadsadsaads")
-})
+router.use('/auth', routerAuth);
 
-
-export default router
+export default router;
