@@ -5,7 +5,7 @@ import * as userService from '../../../Service/userService';
 import bcrypt from 'bcrypt';
 import prisma from '../../../lib/prisma';
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (req: Request, res: Response) => {
   try {
     const input: registerInput = req.body;
     if (!input.email || !input.password || !input.name) {
